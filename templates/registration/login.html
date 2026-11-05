@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+
+{% block title %}تسجيل الدخول | أنجز{% endblock %}
+
+{% block content %}
+
+<section class="auth-layout">
+
+    <div class="auth-visual" aria-hidden="true">
+
+        <span class="auth-spark">✦</span>
+
+        <div class="auth-clock">
+            <span class="auth-hand"></span>
+            <span class="auth-center"></span>
+        </div>
+
+        <p>
+            كل دقيقة
+            <strong>تصنع فرقًا.</strong>
+        </p>
+
+    </div>
+
+
+    <section class="card auth-card">
+
+        <span class="tag">
+            أهلًا بعودتك
+        </span>
+
+        <h1>تسجيل الدخول</h1>
+
+        <p class="auth-description">
+            عد إلى أنشطتك واستمر في استثمار وقتك.
+        </p>
+
+        <form method="post">
+
+            {% csrf_token %}
+
+            {{ form.as_p }}
+
+            {% if next %}
+                <input
+                    type="hidden"
+                    name="next"
+                    value="{{ next }}"
+                >
+            {% endif %}
+
+            <button type="submit">
+                دخول
+            </button>
+
+        </form>
+
+    </section>
+
+</section>
+
+{% endblock %}

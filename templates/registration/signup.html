@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+
+{% block title %}إنشاء حساب | أنجز{% endblock %}
+
+{% block content %}
+
+<section class="auth-layout">
+
+    <div class="auth-visual" aria-hidden="true">
+
+        <span class="auth-spark">✦</span>
+
+        <div class="auth-clock">
+            <span class="auth-hand"></span>
+            <span class="auth-center"></span>
+        </div>
+
+        <p>
+            ابدأ اليوم،
+            <strong>بدقيقة واحدة.</strong>
+        </p>
+
+    </div>
+
+
+    <section class="card auth-card">
+
+        <span class="tag">
+            البداية من هنا
+        </span>
+
+        <h1>إنشاء حساب</h1>
+
+        <p class="auth-description">
+            اجمع دقائقك الصغيرة وشاهد إنجازك يكبر.
+        </p>
+
+        <form method="post">
+
+            {% csrf_token %}
+
+            {{ form.as_p }}
+
+            <button type="submit">
+                إنشاء حساب
+            </button>
+
+        </form>
+
+    </section>
+
+</section>
+
+{% endblock %}

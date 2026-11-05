@@ -1,0 +1,260 @@
+{% extends "base.html" %}
+
+{% block title %}ملفي | أنجز{% endblock %}
+
+{% block content %}
+
+<section class="profile-header card">
+
+    <div class="profile-main">
+
+        <div class="profile-image-wrap">
+
+            <img
+                src="{{ user_profile.image.url }}"
+                alt="الصورة الشخصية"
+                class="profile-image"
+            >
+
+            <span class="profile-spark">✦</span>
+
+        </div>
+
+        <div class="profile-info">
+
+            <span class="profile-label">
+                ملفي في أنجز
+            </span>
+
+            <h1>{{ request.user.username }}</h1>
+
+            <p>
+                كل دقيقة استثمرتها في نفسك تستحق أن تُحسب.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div class="profile-controls">
+
+        <form
+            method="post"
+            enctype="multipart/form-data"
+            class="image-form"
+        >
+            {% csrf_token %}
+
+            <label for="id_image" class="file-label">
+                اختر صورة
+            </label>
+
+            <input
+                type="file"
+                name="image"
+                accept="image/*"
+                id="id_image"
+            >
+
+            <button type="submit">
+                تغيير الصورة
+            </button>
+
+        </form>
+
+        <a
+            class="action-link"
+            href="{% url 'preferences:setup' %}"
+        >
+            إدارة اختياراتي
+        </a>
+
+    </div>
+
+</section>
+
+
+<section class="profile-section-heading">
+
+    <div>
+        <span class="tag">أنشطتي</span>
+        <h2>قائمتي الشخصية</h2>
+    </div>
+
+    <p>
+        ابحث وعدّل وأرشف الأنشطة التي أضفتها.
+    </p>
+
+</section>
+
+
+<form method="get" class="filter-form card">
+
+    <div class="filter-field filter-search">
+
+        <label for="search">
+            البحث عن نشاط
+        </label>
+
+        <input
+            id="search"
+            type="search"
+            name="q"
+            value="{{ query }}"
+            placeholder="اكتب اسم النشاط..."
+        >
+
+    </div>
+
+
+    <div class="filter-field">
+
+        <label for="category">
+            القسم
+        </label>
+
+        <select id="category" name="category">
+
+            <option value="">
+                كل الأقسام
+            </option>
+
+            {% for value, label in categories %}
+
+                <option
+                    value="{{ value }}"
+                    {% if category == value %}selected{% endif %}
+                >
+                    {{ label }}
+                </option>
+
+            {% endfor %}
+
+        </select>
+
+    </div>
+
+
+    <div class="filter-field">
+
+        <label for="state">
+            الحالة
+        </label>
+
+        <select id="state" name="state">
+
+            <option
+                value="active"
+                {% if state == "active" %}selected{% endif %}
+            >
+                النشطة
+            </option>
+
+            <option
+                value="archived"
+                {% if state == "archived" %}selected{% endif %}
+            >
+                المؤرشفة
+            </option>
+
+            <option
+                value="all"
+                {% if state == "all" %}selected{% endif %}
+            >
+                الكل
+            </option>
+
+        </select>
+
+    </div>
+
+
+    <div class="filter-actions">
+
+        <button type="submit">
+            بحث وتصفية
+        </button>
+
+        <a href="{% url 'preferences:profile' %}">
+            مسح الفلاتر
+        </a>
+
+    </div>
+
+</form>
+
+
+<div class="saved-grid">
+
+    {% for item in items %}
+
+        <article class="saved-item">
+
+            <div class="saved-item-top">
+
+                <span class="item-category">
+                    {{ item.get_category_display }}
+                </span>
+
+                {% if not item.is_active %}
+                    <span class="archive-badge">
+                        مؤرشف
+                    </span>
+                {% endif %}
+
+            </div>
+
+            <div class="saved-icon" aria-hidden="true">
+                ✦
+            </div>
+
+            <h3>{{ item.title }}</h3>
+
+            <div class="item-actions">
+
+                <a
+                    class="edit-action"
+                    href="{% url 'preferences:item_edit' item.pk %}"
+                >
+                    تعديل
+                </a>
+
+                <a
+                    href="{% url 'preferences:item_archive' item.pk %}"
+                >
+                    {% if item.is_active %}
+                        أرشفة
+                    {% else %}
+                        استعادة
+                    {% endif %}
+                </a>
+
+                <a
+                    class="delete-action"
+                    href="{% url 'preferences:item_delete' item.pk %}"
+                >
+                    حذف
+                </a>
+
+            </div>
+
+        </article>
+
+    {% empty %}
+
+        <div class="empty-state card">
+            <span>✧</span>
+
+            <h3>لا توجد نتائج</h3>
+
+            <p>
+                لا توجد أنشطة تطابق البحث والفلاتر.
+            </p>
+        </div>
+
+    {% endfor %}
+
+</div>
+
+{% endblock %}

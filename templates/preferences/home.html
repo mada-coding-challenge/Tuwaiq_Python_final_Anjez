@@ -1,0 +1,590 @@
+
+{% extends "base.html" %}
+
+{% block title %}أنجز | كل دقيقة تصنع فرقًا{% endblock %}
+
+{% block content %}
+
+<div class="anjez-home">
+
+    <!-- =========================================
+         HERO
+    ========================================== -->
+
+    <section class="home-hero">
+
+        <!-- HERO TEXT -->
+        <div class="hero-copy">
+
+            <div class="hero-eyebrow">
+                وقتك يستحق أكثر
+            </div>
+
+            <h1 class="hero-title">
+                أنجز
+                <span
+                    aria-hidden="true"
+                    class="hero-title-star"
+                >
+                    ✦
+                </span>
+            </h1>
+
+            <h2 class="hero-subtitle">
+                عندك وقت فراغ؟
+                <br>
+                <span>
+                    حوّله إلى إنجاز.
+                </span>
+            </h2>
+
+            <p class="hero-description">
+                عشر دقائق انتظار، نصف ساعة بين مهمتين،
+                أو وقت لم تخطط له...
+                <br>
+                أخبر أنجز بوقتك المتاح ودعه يقترح لك
+                نشاطًا مناسبًا من قائمتك.
+            </p>
+
+
+            <!-- ACTIONS -->
+            <div class="hero-actions">
+
+                <a
+                    class="home-button hero-cta"
+                    href="{% if request.user.is_authenticated %}{% url 'preferences:suggest' %}{% else %}{% url 'preferences:signup' %}{% endif %}"
+                >
+                    {% if request.user.is_authenticated %}
+                        استثمر وقتي
+                    {% else %}
+                        ابدأ الآن
+                    {% endif %}
+
+                    <svg
+                        aria-hidden="true"
+                        fill="none"
+                        height="18"
+                        stroke="currentColor"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        viewBox="0 0 24 24"
+                        width="18"
+                    >
+                        <path d="m12 19-7-7 7-7"></path>
+                        <path d="M19 12H5"></path>
+                    </svg>
+                </a>
+
+
+                <a
+                    class="hero-secondary"
+                    href="{% url 'preferences:home' %}#about"
+                >
+                    كيف يعمل أنجز؟
+
+                    <svg
+                        aria-hidden="true"
+                        fill="none"
+                        height="16"
+                        stroke="currentColor"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        viewBox="0 0 24 24"
+                        width="16"
+                    >
+                        <path d="m12 19-7-7 7-7"></path>
+                        <path d="M19 12H5"></path>
+                    </svg>
+                </a>
+
+            </div>
+
+
+            <p class="hero-note">
+
+                <svg
+                    aria-hidden="true"
+                    fill="none"
+                    height="18"
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    viewBox="0 0 24 24"
+                    width="18"
+                >
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <path d="M12 6v6l4 2"></path>
+                </svg>
+
+                دقائق قليلة اليوم، إنجاز أكبر مع الوقت.
+
+            </p>
+
+        </div>
+
+
+        <!-- =========================================
+             HERO ILLUSTRATION
+        ========================================== -->
+
+        <div
+            class="anjez-time-scene"
+            aria-label="رسم يوضح تحول الدقائق الصغيرة إلى إنجاز"
+        >
+
+            <!-- SPARKS -->
+
+            <span
+                aria-hidden="true"
+                class="scene-spark anjez-spark-one"
+            >
+                ✦
+            </span>
+
+            <span
+                aria-hidden="true"
+                class="scene-spark anjez-spark-two"
+            >
+                ✧
+            </span>
+
+
+            <!-- =====================================
+                 MAIN CLOCK
+            ====================================== -->
+
+            <div
+                class="anjez-main-clock"
+                aria-label="ساعة"
+                role="img"
+            >
+
+                <span class="clock-number clock-number-12">
+                    12
+                </span>
+
+                <span class="clock-number clock-number-3">
+                    3
+                </span>
+
+                <span class="clock-number clock-number-6">
+                    6
+                </span>
+
+                <span class="clock-number clock-number-9">
+                    9
+                </span>
+
+
+                <span class="anjez-clock-hand anjez-hour-hand"></span>
+
+                <span class="anjez-clock-hand anjez-minute-hand"></span>
+
+                <span class="anjez-clock-center"></span>
+
+
+                <div class="clock-message">
+
+                    <small>
+                        وقتك
+                    </small>
+
+                    <strong>
+                        يصنع فرقًا
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <!-- =====================================
+                 MINUTE CARDS
+            ====================================== -->
+
+            <div class="minute-card minute-card-10">
+
+                <span>
+                    10
+                </span>
+
+                <small>
+                    دقائق
+                </small>
+
+            </div>
+
+
+            <div class="minute-card minute-card-20">
+
+                <span>
+                    20
+                </span>
+
+                <small>
+                    دقيقة
+                </small>
+
+            </div>
+
+
+            <div class="minute-card minute-card-30">
+
+                <span>
+                    30
+                </span>
+
+                <small>
+                    دقيقة
+                </small>
+
+            </div>
+
+
+            <!-- =====================================
+                 ACTIVITY: READING
+            ====================================== -->
+
+            <div class="home-activity home-activity-reading">
+
+                <span class="home-activity-icon">
+
+                    <svg
+                        aria-hidden="true"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        viewBox="0 0 24 24"
+                    >
+                        <path d="M12 7v14"></path>
+
+                        <path
+                            d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"
+                        ></path>
+                    </svg>
+
+                </span>
+
+                <span>
+                    قراءة
+                </span>
+
+                <span class="activity-done">
+                    ✓
+                </span>
+
+            </div>
+
+
+            <!-- =====================================
+                 ACTIVITY: LEARNING
+            ====================================== -->
+
+            <div class="home-activity home-activity-learning">
+
+                <span class="home-activity-icon peach-icon">
+
+                    <svg
+                        aria-hidden="true"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        viewBox="0 0 24 24"
+                    >
+                        <path d="M12 20h9"></path>
+
+                        <path
+                            d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"
+                        ></path>
+                    </svg>
+
+                </span>
+
+                <span>
+                    تعلّم مهارة
+                </span>
+
+                <span class="activity-done">
+                    ✓
+                </span>
+
+            </div>
+
+
+            <!-- =====================================
+                 ACTIVITY: SELF
+            ====================================== -->
+
+            <div class="home-activity home-activity-self">
+
+                <span class="home-activity-icon">
+
+                    <svg
+                        aria-hidden="true"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        viewBox="0 0 24 24"
+                    >
+                        <path
+                            d="M2 9.5a5.5 5.5 0 0 1 9.591-3.676.56.56 0 0 0 .818 0A5.49 5.49 0 0 1 22 9.5c0 2.29-1.5 4-3 5.5l-5.492 5.313a2 2 0 0 1-3 .019L5 15c-1.5-1.5-3-3.2-3-5.5"
+                        ></path>
+                    </svg>
+
+                </span>
+
+                <span>
+                    وقت لنفسك
+                </span>
+
+                <span class="activity-done">
+                    ✓
+                </span>
+
+            </div>
+
+
+            <!-- =====================================
+                 PROGRESS
+            ====================================== -->
+
+            <div class="time-progress">
+
+                <span class="progress-dot"></span>
+
+                <span class="progress-line"></span>
+
+                <span class="progress-dot"></span>
+
+                <span class="progress-line"></span>
+
+                <span class="progress-dot progress-finish">
+                    ✦
+                </span>
+
+            </div>
+
+
+            <p class="scene-caption">
+                الدقيقة التي تستثمرها اليوم لا تضيع.
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================================
+         ABOUT
+    ========================================== -->
+
+    <section
+        class="home-about"
+        id="about"
+    >
+
+        <div class="about-heading-row">
+
+            <div>
+
+                <p class="about-eyebrow">
+                    كيف يعمل أنجز؟
+                </p>
+
+                <h2 class="about-heading">
+                    لا تنتظر وقتًا كبيرًا لتبدأ.
+                </h2>
+
+            </div>
+
+
+            <p class="about-description">
+                أنجز يساعدك على رؤية قيمة أوقات الفراغ الصغيرة،
+                واستخدامها في نشاط يفيدك بدل أن تضيع
+                في التصفح بلا هدف.
+            </p>
+
+        </div>
+
+
+        <!-- =====================================
+             FEATURES
+        ====================================== -->
+
+        <div
+            class="feature-grid"
+            id="features"
+        >
+
+            <!-- 01 -->
+
+            <article class="feature-card">
+
+                <span class="feature-number">
+                    01
+                </span>
+
+                <div class="feature-icon">
+
+                    <svg
+                        aria-hidden="true"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        viewBox="0 0 24 24"
+                    >
+                        <path d="M16 5H3"></path>
+                        <path d="M11 12H3"></path>
+                        <path d="M16 19H3"></path>
+                        <path d="M18 9v6"></path>
+                        <path d="M21 12h-6"></path>
+                    </svg>
+
+                </div>
+
+                <h3>
+                    أضف ما تريد إنجازه
+                </h3>
+
+                <p>
+                    أضف اهتماماتك، الأشياء التي تريد تعلمها،
+                    والأنشطة التي تريد تخصيص وقت لها.
+                </p>
+
+            </article>
+
+
+            <!-- 02 -->
+
+            <article class="feature-card">
+
+                <span class="feature-number">
+                    02
+                </span>
+
+                <div class="feature-icon">
+
+                    <svg
+                        aria-hidden="true"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        viewBox="0 0 24 24"
+                    >
+                        <circle
+                            cx="12"
+                            cy="12"
+                            r="10"
+                        ></circle>
+
+                        <path d="M12 6v6h4"></path>
+                    </svg>
+
+                </div>
+
+                <h3>
+                    أخبرنا بوقتك
+                </h3>
+
+                <p>
+                    عندك 10 أو 20 أو 30 دقيقة؟
+                    أدخل الوقت المتاح وسيختار أنجز
+                    نشاطًا مناسبًا من قائمتك.
+                </p>
+
+            </article>
+
+
+            <!-- 03 -->
+
+            <article class="feature-card">
+
+                <span class="feature-number">
+                    03
+                </span>
+
+                <div class="feature-icon">
+
+                    <svg
+                        aria-hidden="true"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        viewBox="0 0 24 24"
+                    >
+                        <path d="M3 3v18h18"></path>
+
+                        <path d="m7 16 4-5 4 3 5-7"></path>
+                    </svg>
+
+                </div>
+
+                <h3>
+                    شاهد دقائقك تكبر
+                </h3>
+
+                <p>
+                    سجّل وقت إنجازك وشاهد في نهاية الأسبوع
+                    أو الشهر كم من الوقت استثمرته في نفسك.
+                </p>
+
+            </article>
+
+        </div>
+
+
+        <!-- =====================================
+             IMPACT
+        ====================================== -->
+
+        <div class="home-impact">
+
+            <span class="impact-icon">
+                ✦
+            </span>
+
+            <div>
+
+                <small>
+                    تخيّل
+                </small>
+
+                <strong>
+                    20 دقيقة يوميًا = أكثر من 10 ساعات في شهر واحد.
+                </strong>
+
+                <p>
+                    الوقت موجود بالفعل، أنجز يساعدك فقط
+                    على رؤيته واستثماره.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <p class="home-privacy">
+            عند طلب اقتراح نشاط، يستخدم أنجز قائمة اختياراتك
+            والوقت المتاح لاختيار نشاط مناسب.
+        </p>
+
+    </section>
+
+</div>
+
+{% endblock %}

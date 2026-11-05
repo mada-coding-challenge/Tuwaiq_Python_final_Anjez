@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block title %}{{ title }} | أنجز{% endblock %}
+
+{% block content %}
+
+<section class="card auth-card confirm-card">
+
+    <div class="confirm-icon">
+        ?
+    </div>
+
+    <span class="tag">
+        تأكيد العملية
+    </span>
+
+    <h1>{{ title }}</h1>
+
+    <h2>{{ object_name }}</h2>
+
+    <p class="confirm-description">
+        {{ description }}
+    </p>
+
+    <div class="confirm-actions">
+
+        <form method="post">
+            {% csrf_token %}
+
+            <button type="submit">
+                تأكيد
+            </button>
+        </form>
+
+        <a
+            class="secondary-link"
+            href="{% url 'preferences:profile' %}"
+        >
+            تراجع
+        </a>
+
+    </div>
+
+</section>
+
+{% endblock %}

@@ -1,0 +1,132 @@
+
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>{% block title %}أنجز{% endblock %}</title>
+
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+
+<body class="anjez-site">
+
+<header class="site-header">
+    <nav class="site-nav" aria-label="القائمة الرئيسية">
+
+        <a class="brand" href="{% url 'preferences:home' %}">
+            <span class="brand-mark">✦</span>
+            أنجز
+        </a>
+
+        <div class="nav-links">
+
+            <a href="{% url 'preferences:home' %}">
+                الرئيسية
+            </a>
+
+            <a href="{% url 'preferences:home' %}#about">
+                عن أنجز
+            </a>
+
+            {% if request.user.is_authenticated %}
+
+                <a href="{% url 'preferences:suggest' %}">
+                    اقترح نشاط
+                </a>
+
+                <a href="{% url 'preferences:profile' %}">
+                    ملفي
+                </a>
+
+                <a href="{% url 'preferences:achievements' %}">
+                    إنجازاتي
+                </a>
+
+                <form
+                    method="post"
+                    action="{% url 'preferences:logout' %}"
+                    class="logout-form"
+                >
+                    {% csrf_token %}
+                    <button type="submit">خروج</button>
+                </form>
+
+            {% else %}
+
+                <a href="{% url 'preferences:login' %}">
+                    دخول
+                </a>
+
+                <a
+                    class="nav-signup"
+                    href="{% url 'preferences:signup' %}"
+                >
+                    إنشاء حساب
+                </a>
+
+            {% endif %}
+
+        </div>
+
+    </nav>
+</header>
+
+<main class="container">
+
+    {% for message in messages %}
+        <div class="success" role="status">
+            <span>✓</span>
+            {{ message }}
+        </div>
+    {% endfor %}
+
+    {% block content %}{% endblock %}
+
+</main>
+
+<!-- =========================
+     FOOTER
+========================= -->
+
+<footer class="anjez-footer">
+
+    <div class="footer-inner">
+
+        <div class="footer-top">
+
+            <a
+                href="{% url 'preferences:home' %}"
+                class="footer-brand"
+            >
+                أنجز <span>✦</span>
+            </a>
+
+            <p>كل دقيقة تصنع فرقًا.</p>
+
+        </div>
+
+        <div class="footer-bottom">
+
+            <span>
+                © {% now "Y" %} أنجز. جميع الحقوق محفوظة.
+            </span>
+
+            <span>
+                صُنع بواسطة مدى
+                <span class="footer-heart" aria-hidden="true">♥</span>
+            </span>
+
+        </div>
+
+    </div>
+
+</footer>
+
+{% block scripts %}{% endblock %}
+
+</body>
+</html>

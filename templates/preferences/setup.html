@@ -1,0 +1,124 @@
+
+
+{% extends "base.html" %}
+
+{% block title %}اختياراتي{% endblock %}
+
+{% block content %}
+
+<section class="intro">
+    <span class="tag">جهّز قائمة أنجز</span>
+
+    <h1>ما الأشياء التي تريد إنجازها؟</h1>
+
+    <p>
+        أضف الأنشطة التي تحبها أو تريد تطوير نفسك فيها،
+        وسنساعدك لاحقًا على استغلال وقتك المتاح.
+    </p>
+</section>
+
+
+<div class="setup-visual" aria-hidden="true">
+
+    <div class="setup-clock">
+        <span class="setup-clock-hand"></span>
+        <span class="setup-clock-center"></span>
+    </div>
+
+    <span class="mini-task task-one">قراءة</span>
+    <span class="mini-task task-two">تعلّم</span>
+    <span class="mini-task task-three">تطوير</span>
+
+</div>
+
+
+<form method="post" id="preferences-form">
+    {% csrf_token %}
+
+    {{ form.non_field_errors }}
+
+    <div class="cards preference-cards">
+
+        {% for field in form %}
+
+            <section class="card preference-card">
+
+                <div class="preference-number">
+                    0{{ forloop.counter }}
+                </div>
+
+                <label for="{{ field.id_for_label }}">
+                    {{ field.label }}
+                </label>
+
+                <p class="hint">
+                    كل نشاط في سطر مستقل.
+                </p>
+
+                {{ field }}
+                {{ field.errors }}
+
+            </section>
+
+        {% endfor %}
+
+    </div>
+
+    <p class="hint setup-note">
+        إزالة نشاط من القوائم تؤرشفه وتمنع ظهوره
+        في الاقتراحات، مع الاحتفاظ بإنجازاته.
+    </p>
+
+    <div class="setup-submit">
+        <button type="submit">
+            احفظ اختياراتي ←
+        </button>
+    </div>
+
+</form>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+    const preferencesForm = document.getElementById(
+        "preferences-form"
+    );
+
+    const originalValues = Array.from(
+        preferencesForm.querySelectorAll("textarea")
+    ).map((field) => ({
+        name: field.name,
+        items: field.value
+            .split("\n")
+            .map((value) => value.trim())
+            .filter(Boolean),
+    }));
+
+    preferencesForm.addEventListener("submit", (event) => {
+        const removesItems = originalValues.some((original) => {
+            const field = preferencesForm.elements.namedItem(
+                original.name
+            );
+
+            const currentItems = field.value
+                .split("\n")
+                .map((value) => value.trim())
+                .filter(Boolean);
+
+            return original.items.some(
+                (item) => !currentItems.includes(item)
+            );
+        });
+
+        if (
+            removesItems &&
+            !window.confirm(
+                "سيتم أرشفة العناصر التي أزلتها، مع حفظ إنجازاتها. هل تريد المتابعة؟"
+            )
+        ) {
+            event.preventDefault();
+        }
+    });
+</script>
+{% endblock %}

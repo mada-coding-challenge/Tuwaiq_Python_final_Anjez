@@ -1,0 +1,121 @@
+{% extends "base.html" %}
+
+{% block title %}اقترح نشاط | أنجز{% endblock %}
+
+{% block content %}
+
+<section class="suggest-page">
+
+    <div class="suggest-copy">
+
+        <span class="tag">استثمر وقتك</span>
+
+        <h1>
+            كم عندك
+            <span>وقت الآن؟</span>
+        </h1>
+
+        <p>
+            حتى الدقائق القليلة تصنع فرقًا.
+            أخبرنا بوقتك المتاح وسنختار لك نشاطًا
+            من قائمتك يناسب هذه اللحظة.
+        </p>
+
+        <section class="card time-card">
+
+            <form method="post" id="suggest-form">
+
+                {% csrf_token %}
+
+                {{ form.non_field_errors }}
+
+                {% if previous_draw_id %}
+                    <input
+                        type="hidden"
+                        name="previous_draw"
+                        value="{{ previous_draw_id }}"
+                    >
+                {% endif %}
+
+                <label for="{{ form.minutes.id_for_label }}">
+                    {{ form.minutes.label }}
+                </label>
+
+                <div class="minutes-field">
+                    {{ form.minutes }}
+                    <span>دقيقة</span>
+                </div>
+
+                {{ form.minutes.errors }}
+
+                <button type="submit" id="suggest-button">
+                    اختر نشاطي ✦
+                </button>
+
+                <p id="loading-message" class="hint" hidden>
+                    نبحث عن أفضل نشاط لوقتك...
+                </p>
+
+            </form>
+
+        </section>
+
+    </div>
+
+
+    <div class="suggest-illustration" aria-hidden="true">
+
+        <span class="floating-minute minute-one">
+            10
+            <small>دقائق</small>
+        </span>
+
+        <span class="floating-minute minute-two">
+            20
+            <small>دقيقة</small>
+        </span>
+
+        <span class="floating-minute minute-three">
+            30
+            <small>دقيقة</small>
+        </span>
+
+        <div class="big-clock">
+            <span class="clock-dot dot-12"></span>
+            <span class="clock-dot dot-3"></span>
+            <span class="clock-dot dot-6"></span>
+            <span class="clock-dot dot-9"></span>
+
+            <span class="big-hour"></span>
+            <span class="big-minute"></span>
+
+            <span class="big-center"></span>
+
+            <strong>أنجز</strong>
+        </div>
+
+        <span class="suggest-spark spark-a">✦</span>
+        <span class="suggest-spark spark-b">✧</span>
+
+    </div>
+
+</section>
+
+<section class="draw-area">
+    <div id="gravity-root"></div>
+</section>
+
+{% endblock %}
+
+
+{% block scripts %}
+
+<script>
+    document.getElementById("suggest-form")
+        .addEventListener("submit", () => {
+            document.getElementById("suggest-button").disabled = true;
+            document.getElementById("loading-message").hidden = false;
+        });
+</script>
+
+{% endblock %}

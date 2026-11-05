@@ -1,0 +1,194 @@
+{% extends "base.html" %}
+
+{% block title %}إنجازاتي | أنجز{% endblock %}
+
+{% block content %}
+
+<section class="achievement-hero">
+
+    <div>
+
+        <span class="tag">
+            رحلتك مع أنجز
+        </span>
+
+        <h1>
+            دقائق صغيرة،
+            <span>إنجاز كبير.</span>
+        </h1>
+
+        <p>
+            شاهد كم من الوقت الذي كان يمكن أن يضيع
+            أصبح وقتًا استثمرته في نفسك.
+        </p>
+
+    </div>
+
+
+    <div class="growth-visual" aria-hidden="true">
+
+        <div class="growth-step growth-1">
+            <span>10</span>
+        </div>
+
+        <div class="growth-step growth-2">
+            <span>30</span>
+        </div>
+
+        <div class="growth-step growth-3">
+            <span>60</span>
+        </div>
+
+        <div class="growth-star">
+            ✦
+        </div>
+
+    </div>
+
+</section>
+
+
+<div class="period-links">
+
+    <a
+        href="?period=week"
+        class="{% if period == 'week' %}selected{% endif %}"
+    >
+        هذا الأسبوع
+    </a>
+
+    <a
+        href="?period=month"
+        class="{% if period == 'month' %}selected{% endif %}"
+    >
+        هذا الشهر
+    </a>
+
+    <a
+        href="?period=year"
+        class="{% if period == 'year' %}selected{% endif %}"
+    >
+        هذه السنة
+    </a>
+
+</div>
+
+
+<div class="summary-grid">
+
+    <article class="card stat-card">
+
+        <span class="stat-icon">◷</span>
+
+        <div>
+            <h2>{{ total_minutes }}</h2>
+            <p>دقيقة استثمرتها في نفسك</p>
+        </div>
+
+    </article>
+
+
+    <article class="card stat-card">
+
+        <span class="stat-icon peach">✓</span>
+
+        <div>
+            <h2>{{ sessions_count }}</h2>
+            <p>جلسة أنجزتها</p>
+        </div>
+
+    </article>
+
+</div>
+
+
+<section class="achievement-section card">
+
+    <div class="section-title">
+
+        <div>
+            <span class="tag">التفاصيل</span>
+            <h2>أين استثمرت وقتك؟</h2>
+        </div>
+
+        <span class="section-star">✦</span>
+
+    </div>
+
+
+    <div class="table-scroll">
+
+        <table class="achievement-table">
+
+            <thead>
+                <tr>
+                    <th scope="col">النشاط</th>
+                    <th scope="col">الوقت بالدقائق</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+                {% for row in rows %}
+
+                    <tr>
+                        <td>
+                            <span class="activity-table-dot"></span>
+                            {{ row.title }}
+                        </td>
+
+                        <td>
+                            <strong>{{ row.minutes }}</strong>
+                            دقيقة
+                        </td>
+                    </tr>
+
+                {% empty %}
+
+                    <tr>
+                        <td colspan="2">
+                            لا توجد إنجازات في هذه الفترة.
+                        </td>
+                    </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+
+        {% if page_obj.paginator.num_pages > 1 %}
+
+            <div class="pagination">
+
+                {% if page_obj.has_previous %}
+
+                    <a href="?page={{ page_obj.previous_page_number }}&period={{ period }}&q={{ query }}">
+                        السابق
+                    </a>
+
+                {% endif %}
+
+                <span>
+                    صفحة {{ page_obj.number }}
+                    من {{ page_obj.paginator.num_pages }}
+                </span>
+
+                {% if page_obj.has_next %}
+
+                    <a href="?page={{ page_obj.next_page_number }}&period={{ period }}&q={{ query }}">
+                        التالي
+                    </a>
+
+                {% endif %}
+
+            </div>
+
+        {% endif %}
+
+    </div>
+
+</section>
+
+{% endblock %}

@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block title %}تعديل النشاط | أنجز{% endblock %}
+
+{% block content %}
+
+<section class="card auth-card edit-card">
+
+    <div class="edit-icon">
+        ✎
+    </div>
+
+    <span class="tag">
+        تعديل النشاط
+    </span>
+
+    <h1>حدّث نشاطك</h1>
+
+    <p class="hint">
+        تعديل الاسم يحافظ على جميع إنجازات النشاط السابقة.
+    </p>
+
+    <form method="post">
+
+        {% csrf_token %}
+
+        {{ form.as_p }}
+
+        <button type="submit">
+            حفظ التعديل
+        </button>
+
+    </form>
+
+    <a
+        class="secondary-link"
+        href="{% url 'preferences:profile' %}"
+    >
+        ← رجوع إلى ملفي
+    </a>
+
+</section>
+
+{% endblock %}

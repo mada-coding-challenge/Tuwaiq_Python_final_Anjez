@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block title %}تعذر فتح المؤقت | أنجز{% endblock %}
+
+{% block content %}
+
+<section class="card auth-card unavailable-card">
+
+    <div class="broken-clock" aria-hidden="true">
+        <span class="broken-hand"></span>
+        <span class="broken-center"></span>
+    </div>
+
+    <span class="tag">
+        الجلسة غير متاحة
+    </span>
+
+    <h1>تعذر فتح هذه الجلسة</h1>
+
+    <p class="unavailable-description">
+        رابط المؤقت غير صالح أو انتهت صلاحيته.
+        يمكنك إلغاء الجلسة والبدء باقتراح جديد.
+    </p>
+
+    <a
+        class="action-link"
+        href="{% url 'preferences:cancel' draw.pk %}"
+    >
+        إلغاء الجلسة
+    </a>
+
+    <br>
+
+    <a
+        class="secondary-link"
+        href="{% url 'preferences:profile' %}"
+    >
+        الرجوع إلى ملفي
+    </a>
+
+</section>
+
+{% endblock %}

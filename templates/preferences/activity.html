@@ -1,0 +1,224 @@
+{% extends "base.html" %}
+
+{% block title %}{{ draw.item.title }}{% endblock %}
+
+{{% block content %}
+
+<section class="activity-shell">
+
+    <div class="activity-decoration" aria-hidden="true">
+        <span>✦</span>
+
+        <div class="activity-capsule-visual">
+            <div></div>
+        </div>
+
+        <span>✧</span>
+    </div>
+
+
+    <section class="card activity-card">
+
+        <span class="tag">
+            {{ draw.item.get_category_display }}
+        </span>
+
+        <p class="activity-eyebrow">
+            نشاطك لهذه اللحظة
+        </p>
+
+        <h1>{{ draw.item.title }}</h1>
+
+        <p class="activity-reason">
+            {{ draw.reason }}
+        </p>
+
+        <div class="available-time">
+            <span>◷</span>
+            وقتك المتاح:
+            <strong>{{ minutes }} دقيقة</strong>
+        </div>
+
+
+        {% if draw.status == "suggested" %}
+
+            <div class="activity-actions">
+
+                <form
+                    method="post"
+                    action="{% url 'preferences:start' draw.pk %}"
+                >
+                    {% csrf_token %}
+
+                    <input
+                        type="hidden"
+                        name="token"
+                        value="{{ token }}"
+                    >
+
+                    <button type="submit">
+                        ابدأ الآن
+                    </button>
+                </form>
+
+                <a
+                    class="secondary-link"
+                    href="{{ again_url }}"
+                >
+                    اختر نشاطًا آخر
+                </a>
+
+            </div>
+
+
+        {% elif draw.status == "running" %}
+
+            <div class="timer-shell">
+
+                <p class="timer-label">
+                    الوقت المتبقي
+                </p>
+
+                <div
+                    id="timer"
+                    class="timer"
+                    data-seconds="{{ remaining_seconds }}"
+                    data-end-url="{% url 'preferences:end' draw.pk %}"
+                    data-token="{{ token }}"
+                    role="timer"
+                    aria-label="الوقت المتبقي"
+                >
+                    --:--
+                </div>
+
+            </div>
+
+            <p id="timer-message">
+                ركّز على نشاطك، هذه الدقائق لك.
+            </p>
+
+            <form
+                id="complete-form"
+                method="post"
+                action="{% url 'preferences:complete' draw.pk %}"
+            >
+                {% csrf_token %}
+
+                <input
+                    type="hidden"
+                    name="token"
+                    value="{{ token }}"
+                >
+
+                <button type="submit">
+                    ✓ أنجزت — سجّل وقتي
+                </button>
+
+            </form>
+
+            <p class="hint">
+                لا يُسجل الإنجاز تلقائيًا عند انتهاء المؤقت.
+            </p>
+
+            <p class="notice" role="alert">
+                مغادرة الصفحة أو تحديثها ينهي الجلسة ويحفظ الوقت المنقضي.
+            </p>
+
+        {% endif %}
+
+    </section>
+
+</section>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+    const timer = document.getElementById("timer");
+
+    if (timer) {
+        const deadline =
+            Date.now() + Number(timer.dataset.seconds) * 1000;
+
+        let normalCompletion = false;
+        let endSent = false;
+
+        const completeForm = document.getElementById(
+            "complete-form"
+        );
+
+        function updateTimer() {
+            const remaining = Math.max(
+                0,
+                Math.ceil((deadline - Date.now()) / 1000)
+            );
+
+            timer.textContent =
+                String(Math.floor(remaining / 60)).padStart(2, "0") +
+                ":" +
+                String(remaining % 60).padStart(2, "0");
+
+            if (remaining === 0) {
+                document.getElementById("timer-message").textContent =
+                    "انتهى الوقت. أكد إنجازك لتسجيله.";
+            }
+
+            return remaining;
+        }
+
+        updateTimer();
+
+        const interval = setInterval(() => {
+            if (updateTimer() === 0) {
+                clearInterval(interval);
+            }
+        }, 250);
+
+        completeForm.addEventListener("submit", () => {
+            normalCompletion = true;
+        });
+
+        function endSession() {
+            if (normalCompletion || endSent) {
+                return;
+            }
+
+            endSent = true;
+            clearInterval(interval);
+
+            const csrf = completeForm.querySelector(
+                'input[name="csrfmiddlewaretoken"]'
+            ).value;
+
+            const body = new URLSearchParams({
+                csrfmiddlewaretoken: csrf,
+                token: timer.dataset.token,
+            });
+
+            if (!navigator.sendBeacon(timer.dataset.endUrl, body)) {
+                fetch(timer.dataset.endUrl, {
+                    method: "POST",
+                    body: body,
+                    credentials: "same-origin",
+                    keepalive: true,
+                }).catch(() => {});
+            }
+        }
+
+        window.addEventListener("beforeunload", (event) => {
+            if (!normalCompletion) {
+                event.preventDefault();
+                event.returnValue = "";
+            }
+        });
+
+        window.addEventListener("pagehide", endSession);
+
+        window.addEventListener("pageshow", (event) => {
+            if (event.persisted) {
+                window.location.reload();
+            }
+        });
+    }
+</script>
+{% endblock %}
