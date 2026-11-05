@@ -254,7 +254,7 @@ python manage.py test
 
 ### بدء المؤقت
 
-![ُTimer](docs/images/نشاط ٢.png)
+![ُTimer](docs/images/نشاط2.png)
 
 ### تقرير الإنجازات
 
